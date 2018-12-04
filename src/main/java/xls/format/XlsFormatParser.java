@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XlsFormatParser<T> implements FormatParser {
+class XlsFormatParser<T> implements FormatParser {
 
     private Class<T> type;
     private String nameSheet;
