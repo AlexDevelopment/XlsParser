@@ -17,6 +17,6 @@ allprojects {
 ```
 ```
 dependencies {
-    implementation 'com.github.khodanovich:XlsParser:Tag'
+    implementation 'com.github.khodanovich:XlsParser:1.0.2-beta'
 }
 ```
