@@ -130,9 +130,11 @@ class XlsxFormatParser<T> implements FormatParser {
             for (int k = 0; k < row.getLastCellNum(); k++){
                 Cell cell = row.getCell(k);
                 try {
-                    Field field = instant.getClass().getDeclaredField(headers.get(k));
-                    TypeFieldWriter typeW = TypeWriterFactory.<Class<T>>getTypeWriterBy(field);
-                    typeW.write(field, cell, instant);
+                    if(cell != null){
+                        Field field = instant.getClass().getDeclaredField(headers.get(k));
+                        TypeFieldWriter typeW = TypeWriterFactory.<Class<T>>getTypeWriterBy(field);
+                        typeW.write(field, cell, instant);
+                    }
                 } catch (NoSuchFieldException | IllegalAccessException | InstantiationException e) {
                     onDispatchError(e);
                     e.printStackTrace();
