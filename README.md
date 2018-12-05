@@ -11,12 +11,14 @@ XlsParser.takeFirstSheetWithType(Item.class)
 allprojects {
     repositories {
         ...
+        mavenCentral()
         maven { url 'https://jitpack.io' }
     }
 }
 ```
 ```
 dependencies {
+    compile'org.apache.poi:poi-ooxml:4.0.0'
     implementation 'com.github.khodanovich:XlsParser:1.0.2-beta'
 }
 ```
