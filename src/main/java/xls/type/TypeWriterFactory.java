@@ -1,6 +1,7 @@
 package xls.type;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 public class TypeWriterFactory {
 
@@ -11,6 +12,7 @@ public class TypeWriterFactory {
     private static final String FLOAT_OBJECT_TYPE = Float.class.getTypeName();
     private static final String LONG_TYPE = long.class.getTypeName();
     private static final String LONG_OBJECT_TYPE = Long.class.getTypeName();
+    private static final String DATE_TYPE = Date.class.getTypeName();
 
     public static <T> TypeFieldWriter getTypeWriterBy(Field field){
         String fieldType = field.getGenericType().getTypeName();
@@ -21,6 +23,8 @@ public class TypeWriterFactory {
             return FloatTypeFieldWriter.<Class<T>>getInstance();
         } else if (fieldType.equals(LONG_TYPE) || fieldType.equals(LONG_OBJECT_TYPE)){
             return LongTypeFieldWriter.<Class<T>>getInstance();
+        } else if (fieldType.equals(DATE_TYPE)){
+            return DateTypeFieldWriter.getInstance();
         }
 
         return StringTypeFieldWriter.<Class<T>>getInstance();
