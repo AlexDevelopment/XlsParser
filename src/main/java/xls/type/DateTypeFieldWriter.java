@@ -104,9 +104,9 @@ public class DateTypeFieldWriter <T> implements TypeFieldWriter {
     private <T> void writeNumericToField(Field field, T instant, Cell cell) throws IllegalAccessException {
             if (DateUtil.isCellDateFormatted(cell))
                 if (typeAdapter != null) {
-                    field.set(instant, typeAdapter.write((int)cell.getNumericCellValue()));
+                    field.set(instant, typeAdapter.write(cell.getDateCellValue()));
                 } else {
-                    field.set(instant, (int)cell.getNumericCellValue());
+                    field.set(instant, cell.getDateCellValue());
                 }
             else
                 throw new IllegalAccessException();
