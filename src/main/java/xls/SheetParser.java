@@ -1,11 +1,15 @@
 package xls;
 
 
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import xls.exception.OnErrorListener;
 import xls.format.FormatParser;
 import xls.format.FormatParserFactory;
+import xls.util.WorkBookUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class SheetParser<T>  {
@@ -33,15 +37,17 @@ public class SheetParser<T>  {
     }
 
     public List<T> parse(File file){
-        String fileExtension = getFileExtension(file);
-        FormatParser parser = FormatParserFactory.getFormatParser(fileExtension, type, nameSheet, onErrorListener);
-        return parser.parse(file);
+        Workbook workBook = null;
+        try {
+            workBook = WorkbookFactory.create(file);
+        } catch (IOException e) {
+            onErrorListener.onError(e);
+            e.printStackTrace();
+        }
+
+        FormatParser parser = FormatParserFactory.getFormatParser(WorkBookUtil.getBookTypeBy(workBook), type, nameSheet, onErrorListener);
+        return parser.parse(workBook);
     }
 
-    private static String getFileExtension(File file) {
-        String fileName = file.getName();
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-            return fileName.substring(fileName.lastIndexOf(".")+1);
-        else return "";
-    }
+
 }

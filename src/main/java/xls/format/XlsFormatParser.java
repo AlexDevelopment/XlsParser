@@ -1,7 +1,5 @@
 package xls.format;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -10,9 +8,6 @@ import xls.exception.OnErrorListener;
 import xls.type.TypeFieldWriter;
 import xls.type.TypeWriterFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -61,35 +56,8 @@ class XlsFormatParser<T> implements FormatParser {
     }
 
     @Override
-    public List<T> parse(File file) {
-        FileInputStream fileInputStream = createFileInputStreamFrom(file);
-        Workbook excelBook = createHSSFWorkbookFrom(fileInputStream);
-        return readBook(excelBook);
-    }
-
-    private FileInputStream createFileInputStreamFrom(File file) {
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            onDispatchError(e);
-            e.printStackTrace();
-        }
-        return fileInputStream;
-    }
-
-    private Workbook createHSSFWorkbookFrom(FileInputStream fileInputStream) {
-        Workbook excelBook = null;
-        try {
-            excelBook = new HSSFWorkbook(fileInputStream);
-        } catch (IOException e) {
-            onDispatchError(e);
-            e.printStackTrace();
-        } catch (OfficeXmlFileException e) {
-            onDispatchError(e);
-            e.printStackTrace();
-        }
-        return excelBook;
+    public List<T> parse(Workbook book) {
+        return readBook(book);
     }
 
     private List<T> readBook(Workbook book) {

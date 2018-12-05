@@ -1,13 +1,15 @@
 package xls;
 
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import xls.exception.OnErrorListener;
 import xls.format.FormatParser;
 import xls.format.FormatParserFactory;
+import xls.util.WorkBookUtil;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
-
-import static xls.util.FileUtil.getFileExtension;
 
 public class IterableSheetParser<T> {
 
@@ -28,8 +30,14 @@ public class IterableSheetParser<T> {
     }
 
     public List<T> parse(File file){
-        String fileExtension = getFileExtension(file);
-        FormatParser parser = FormatParserFactory.getIterableSheetsFormatParser(fileExtension, type, onErrorListener);
-        return parser.parse(file);
+        Workbook workBook = null;
+        try {
+            workBook = WorkbookFactory.create(file);
+        } catch (IOException e) {
+            onErrorListener.onError(e);
+            e.printStackTrace();
+        }
+        FormatParser parser = FormatParserFactory.getIterableSheetsFormatParser(WorkBookUtil.getBookTypeBy(workBook), type, onErrorListener);
+        return parser.parse(workBook);
     }
 }
