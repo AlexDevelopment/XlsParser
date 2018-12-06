@@ -88,7 +88,10 @@ class XlsxFormatParser<T> implements FormatParser {
 
     private List<T> readSheet(Sheet sheet){
         List<T> items = new ArrayList<T>();
-        writeHeadersFrom(sheet);
+
+        if (sheet.getRow(0) != null){
+            writeHeadersFrom(sheet.getRow(0));
+        }
 
         for (int i = 1; i <= sheet.getLastRowNum(); i++){
             Row row = sheet.getRow(i);
@@ -112,8 +115,7 @@ class XlsxFormatParser<T> implements FormatParser {
         return items;
     }
 
-    private void writeHeadersFrom(Sheet sheet){
-        Row firstRow = sheet.getRow(0);
+    private void writeHeadersFrom(Row firstRow){
         for (Cell cell: firstRow) {
             headers.add(cell.getStringCellValue());
         }
